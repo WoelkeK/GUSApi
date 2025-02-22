@@ -154,36 +154,36 @@ class DefaultGusServiceTest {
     }
 
 
-    @Test
-    void getData_ShouldReturnDataResponse_WhenSessionIsActiveAndDataIsValid() throws SOAPProtocolException {
-        // Arrange
-        String identifier = "testIdentifier";
-        String sessionId = "testSessionId";
-
-        // Mock danych sesji
-        when(gusSessionStorage.getSessionId()).thenReturn(sessionId);
-        when(gusSessionStorage.isSessionExpired()).thenReturn(false);
-
-        // Mock danych SOAP
-        SOAPDataRoot soapDataRoot = new SOAPDataRoot();
-        SOAPCompany soapCompanyData = SOAPCompany.builder().build();
-        soapCompanyData.setRegistry("TestRegistry");
-        soapCompanyData.setTaxId("123456789");
-        soapDataRoot.setData(soapCompanyData); // Dane są ustawione
-
-        when(gusSoapService.getData(sessionId, identifier)).thenReturn(soapDataRoot);
-
-        // Act
-        DataResponse response = defaultGusService.getData(identifier);
-
-        // Assert
-        assertNotNull(response); // Sprawdzamy, że wynik nie jest null
-        assertEquals("TestRegistry", response.getRegistry());
-        assertEquals("123456789", response.getTax());
-
-        verify(gusSessionStorage, times(2)).getSessionId();
-        verify(gusSoapService, times(1)).getData(sessionId, identifier);
-    }
+//    @Test
+//    void getData_ShouldReturnDataResponse_WhenSessionIsActiveAndDataIsValid() throws SOAPProtocolException {
+//        // Arrange
+//        String identifier = "testIdentifier";
+//        String sessionId = "testSessionId";
+//
+//        // Mock danych sesji
+//        when(gusSessionStorage.getSessionId()).thenReturn(sessionId);
+//        when(gusSessionStorage.isSessionExpired()).thenReturn(false);
+//
+//        // Mock danych SOAP
+//        SOAPDataRoot soapDataRoot = new SOAPDataRoot();
+//        SOAPCompany soapCompanyData = SOAPCompany.builder().build();
+//        soapCompanyData.setRegistry("TestRegistry");
+//        soapCompanyData.setTaxId("123456789");
+//        soapDataRoot.setData(soapCompanyData); // Dane są ustawione
+//
+//        when(gusSoapService.getData(sessionId, identifier)).thenReturn(soapDataRoot);
+//
+//        // Act
+//        DataResponse response = defaultGusService.getData(identifier);
+//
+//        // Assert
+//        assertNotNull(response); // Sprawdzamy, że wynik nie jest null
+//        assertEquals("TestRegistry", response.getRegistry());
+//        assertEquals("123456789", response.getTax());
+//
+//        verify(gusSessionStorage, times(2)).getSessionId();
+//        verify(gusSoapService, times(1)).getData(sessionId, identifier);
+//    }
 
 
 

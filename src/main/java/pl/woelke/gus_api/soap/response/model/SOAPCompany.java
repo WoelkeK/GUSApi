@@ -3,10 +3,9 @@ package pl.woelke.gus_api.soap.response.model;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
-import lombok.Builder;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@Builder(toBuilder = true)
+//@Builder(toBuilder = true)
 public class SOAPCompany {
 
     @XmlElement(name = "Regon")

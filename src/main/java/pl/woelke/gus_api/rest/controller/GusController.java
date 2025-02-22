@@ -1,5 +1,7 @@
 package pl.woelke.gus_api.rest.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,13 +17,13 @@ import pl.woelke.gus_api.rest.model.DataResponse;
 import pl.woelke.gus_api.rest.model.LoginRequest;
 import pl.woelke.gus_api.rest.model.LoginResponse;
 import pl.woelke.gus_api.rest.model.LogoutResponse;
-import pl.woelke.gus_api.rest.model.StatusResponse;
 import pl.woelke.gus_api.rest.service.GusService;
 
 
 @RestController
 @RequestMapping("/api/v1")
 @Slf4j
+@Tag(name = "GUS Controller", description = "Endpointy do integracji z systemem GUS")
 public class GusController {
 
     private final GusService gusService;
@@ -32,6 +34,10 @@ public class GusController {
     }
 
     @PostMapping("/login")
+    @Operation(
+            summary = "Zaloguj do GUS",
+            description = "Ten endpoint służy do logowania w systemie GUS na podstawie identyfikatora"
+    )
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         LoginResponse response;
         try {
@@ -43,6 +49,10 @@ public class GusController {
     }
 
     @GetMapping("/data")
+    @Operation(
+            summary = "Pobierz dane z GUS",
+            description = "Ten endpoint służy do pobierania danych z systemu GUS przy aktywnej sesji"
+    )
     public ResponseEntity<DataResponse> getDataFromSoap(@RequestParam(value = "nip", required = true) String identifier) {
         DataResponse response;
         try {
@@ -57,16 +67,11 @@ public class GusController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/status")
-    public ResponseEntity<StatusResponse> getStatus() {
-        try {
-            return new ResponseEntity<>(gusService.getStatus(), HttpStatus.OK);
-        } catch (SOAPProtocolException e) {
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-    }
-
     @GetMapping("/logout")
+    @Operation(
+            summary = "Wyloguj z GUS",
+            description = "Ten endpoint służy do wylogowania z systemu GUS i zamyka otwartą sesje"
+    )
     public ResponseEntity<LogoutResponse> logout() {
         try {
             return new ResponseEntity<>(gusService.logout(), HttpStatus.OK);
